@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quiz App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+  </head>
+  <body style="background:black; color:white;">
+    <div class="container my-5">
+
+      <form method="GET" action="{%url 'search'%}" class="d-flex justify-content-between">
+           <div class="mb-3" style="width:75% !important;">
+             <input type="text" class="form-control" id="query" name="query" required placeholder="Search questions" style="width:100% !important; height:40px;" >
+           </div>
+           <button type="submit" class="btn btn-info" style="width:fit-content !important; height:40px; color:white;">Search</button>
+         </form>
+
+
+      {%if heading%}
+      <h1 class="heading-4 text-center my-5">{{heading}}</h1>
+      <hr>
+      {%endif%}
+      {%if update%}
+      <h1 class="heading-4 text-center my-5">{{update}}</h1>
+      <hr>
+      {%endif%}
+      <div class="d-flex justify-content-between">
+      <h1 class="h6 my-5">Total Questions are: {{length}}</h1>
+      <h1 class="h6 my-5">Deleted Questions are: {{delQ}}</h1>
+      </div>
+      {%if messages%}
+  {%for message in messages%}
+      <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+        <b>{{message}}</b>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {%endfor%}
+      {%endif%}
+        <form method="POST">
+         {% csrf_token %}
+            <div class="mb-3">
+              <label for="ques" class="form-label">Question</label>
+              <input type="text" class="form-control" id="ques" aria-describedby="emailHelp" name="question" required {%if question%}value="{{question.question}}"{%endif%}>
+            </div>
+            <div class="mb-3">
+              <label for="solution" class="form-label">Solution</label>
+              <textarea class="form-control" required id="solution" rows="8" name="solution">{%if question%}{{question.answer}}{%endif%}</textarea>
+            </div>
+            <button type="submit" class="btn btn-success">{%if add%}{{add}}{%endif%}  {%if change%}{{change}}{%endif%}</button>
+          </form>
+          <div class="d-flex justify-content-between">
+          <a href="{%url "show"%}" style="text-decoration:none !important;"><h1 class="h6 my-5">Show questions</h1></a>
+          <a href="{%url "ShowDelQues"%}" style="text-decoration:none !important;"><h1 class="h6 my-5">Show deleted questions</h1></a>
+          </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+  </body>
+</html>
